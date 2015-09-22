@@ -166,12 +166,11 @@ class Scorer(object):
   def getScore(self):
     """Score the entire datafile and return a single floating point score.
     The position in a given window is calculated as the distance from the end
-    of the window, normalized [-1,0]. I.e. positions 1.0 and 0.0 are at the very
-    front and back of the anomaly window, respectively.
-    
+    of the window, normalized [-1,0]. I.e. positions -1.0 and 0.0 are at the
+    very front and back of the anomaly window, respectively.
+
     @return  (float)    Score at each timestamp of the datafile.
     """
-
     # Scoring section (i) handles TP and FN, (ii) handles FP, and TN are 0.
     # Input to the scoring function is var position: within a given window, the
     # position relative to the true anomaly.
@@ -182,6 +181,7 @@ class Scorer(object):
     # lead to a negative contribution, TPs a positive one.
     tpScore = 0
     fnScore = 0
+    maxTP = scaledSigmoid(-1.0)
     for window in self.windows:
       tpIndex = window.getFirstTruePositive()
 
@@ -193,7 +193,8 @@ class Scorer(object):
       else:
         # True positive
         position = -(window.indices[-1] - tpIndex + 1)/float(window.length)
-        thisTP = scaledSigmoid(position)*self.costMatrix["tpWeight"] / 0.98661
+        thisTP = scaledSigmoid(position)*self.costMatrix["tpWeight"] / maxTP
+        # thisTP = 1.0 * self.costMatrix["tpWeight"]  # flat score
         scores.iloc[window.indices[0]] = thisTP
         tpScore += thisTP
 
@@ -212,11 +213,12 @@ class Scorer(object):
         window = self.windows[windowId]
         position = abs(window.indices[-1] - i)/float(window.length-1)
         thisFP = scaledSigmoid(position)*self.costMatrix["fpWeight"]
+        # thisFP = -1.0 * self.costMatrix["fpWeight"]  # flat score
         scores.iloc[i] = thisFP
         fpScore += thisFP
 
     self.score = tpScore + fpScore + fnScore
-    
+
     return (scores, self.score)
 
 
@@ -288,19 +290,19 @@ def scoreCorpus(threshold, args):
                               to a detection.
 
   @param args       (tuple)   Contains:
-  
+
     pool                (multiprocessing.Pool)  Pool of processes to perform
                                                 tasks in parallel.
     detectorName        (string)                Name of detector.
-    
+
     profileName         (string)                Name of scoring profile.
-    
+
     costMatrix          (dict)                  Cost matrix to weight the
                                                 true positives, false negatives,
                                                 and false positives during
                                                 scoring.
     resultsDetectorDir  (string)                Directory for the results CSVs.
-    
+
     resultsCorpus       (nab.Corpus)            Corpus object that holds the per
                                                 record anomaly scores for a
                                                 given detector.
@@ -318,7 +320,7 @@ def scoreCorpus(threshold, args):
    corpusLabel,
    probationaryPercent,
    scoreFlag) = args
-   
+
   args = []
   for relativePath, dataSet in resultsCorpus.dataFiles.iteritems():
     if "_scores.csv" in relativePath:
@@ -413,7 +415,7 @@ def scoreDataSet(args):
    costMatrix,
    probationaryPeriod,
    scoreFlag) = args
-   
+
   scorer = Scorer(
     timestamps=labels["timestamp"],
     predictions=predicted,
@@ -423,7 +425,7 @@ def scoreDataSet(args):
     probationaryPeriod=probationaryPeriod)
 
   (scores,_) = scorer.getScore()
-  
+
   if scoreFlag:
     # Append scoring function values to the respective results file
     df_csv = pandas.read_csv(outputPath, header=0, parse_dates=[0])

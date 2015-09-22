@@ -23,21 +23,21 @@
             "threshold": 0.9999877929687505
         },
         "standard": {
-            "score": 19.964830452986853,
-            "threshold": 0.9999755859375006
+            "score": 22.410000000000004,
+            "threshold": 0.9999877929687505
         }
     },
     "random": {
         "reward_low_FN_rate": {
-            "score": -45.889252239141754,
+            "score": -42.070000000000014,
             "threshold": 0.9984497070312507
         },
         "reward_low_FP_rate": {
-            "score": -40.59422055318891,
+            "score": -39.04000000000002,
             "threshold": 0.9995117187500009
         },
         "standard": {
-            "score": -25.889252239141747,
+            "score": -22.069999999999993,
             "threshold": 0.9984497070312507
         }
     },
@@ -51,22 +51,22 @@
             "threshold": 0.9000000000000006
         },
         "standard": {
-            "score": -5.235267306651327,
+            "score": -2.67,
             "threshold": 0.8000000000000003
         }
     },
-    "twitterADVec": {
+    "twitter": {
         "reward_low_FN_rate": {
-            "score": -30.63914483,
-            "threshold": 0.5
+            "score": -25.629999999999995,
+            "threshold": 0.49999999999999994
         },
         "reward_low_FP_rate": {
-            "score": -12.15798656,
-            "threshold": 0.5
+            "score": -7.26,
+            "threshold": 0.49999999999999994
         },
         "standard": {
-            "score": -8.639144834,
-            "threshold": 0.5
+            "score": -3.63,
+            "threshold": 0.49999999999999994
         }
     },
     "twitterADTs": {
@@ -80,6 +80,20 @@
         },
         "standard": {
             "score": -14.9892525,
+            "threshold": 0.5
+        }
+    },
+    "twitterADVec": {
+        "reward_low_FN_rate": {
+            "score": -30.63914483,
+            "threshold": 0.5
+        },
+        "reward_low_FP_rate": {
+            "score": -12.15798656,
+            "threshold": 0.5
+        },
+        "standard": {
+            "score": -8.639144834,
             "threshold": 0.5
         }
     }
