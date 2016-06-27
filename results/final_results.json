@@ -1,8 +1,8 @@
 {
     "bayesChangePt": {
-        "reward_low_FN_rate": 32.256563780459771,
+        "reward_low_FN_rate": 32.25656378045977,
         "reward_low_FP_rate": 3.2065793456896587,
-        "standard": 17.714021303663792
+        "standard": 17.71402130366379
     },
     "null": {
         "reward_low_FN_rate": 0.0,
@@ -35,8 +35,8 @@
         "standard": 47.06195725408189
     },
     "windowedGaussian": {
-        "reward_low_FN_rate": 29.710789954022992,
-        "reward_low_FP_rate": -27.446744226724128,
-        "standard": 14.393771137974136
+        "reward_low_FN_rate": 38.196504847729884,
+        "reward_low_FP_rate": 11.792399744956894,
+        "standard": 30.570619340560345
     }
 }
